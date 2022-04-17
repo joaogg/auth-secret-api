@@ -13,7 +13,8 @@ router.get("/", checkAccessToken, UserController.getAll);
 router.get("/:id([0-9]+)", UserController.getOneById);
 
 // Create a new user
-router.post("/", [checkJwt, checkRole(["ADMIN"])], UserController.createUser);
+// router.post("/", [checkJwt, checkRole(["ADMIN"])], UserController.createUser);
+router.post("/", UserController.createUser);
 
 // Edit one user
 router.put("/:id([0-9]+)", UserController.editUser);

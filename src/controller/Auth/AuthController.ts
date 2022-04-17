@@ -2,12 +2,13 @@ import { Request, Response } from "express";
 import * as jwt from "jsonwebtoken";
 import { getRepository } from "typeorm";
 import { validate } from "class-validator";
-
 import User from "../../entity/User/User";
 import config from "../../config/config";
 import AppError from "../../app/error/AppError";
 import UserDAO from "../../model/User/UserDAO";
 import AppSuccess from "../../app/success/AppSuccess";
+import moment = require("moment");
+
 
 export default class AuthController {
   public static async login(req: Request, res: Response): Promise<Response> {
@@ -50,7 +51,15 @@ export default class AuthController {
     );
 
     // Envia os dados e o status da API REST
-    const success = new AppSuccess('Login efetuado com sucesso!', 200, [{ 'token': token }]);
+    const success = new AppSuccess('Login efetuado com sucesso!',
+    200, 
+    [
+      { 
+        'token': token, 
+        'expiration': moment(new Date()).add(6, 'hours'),
+        'user': user
+      }
+    ]);
 
     // Envia os dados e o status da API REST
     return res
